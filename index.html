@@ -1,0 +1,2020 @@
+```html
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoho One Sales Mastery | e& Egypt - Enhanced Edition</title>
+
+    <!-- Preconnect to external domains for faster DNS resolution -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://ik.imagekit.io" crossorigin>
+
+    <!-- Optimized font loading with font-display swap -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    </noscript>
+
+    <!-- Defer Font Awesome loading -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </noscript>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Defer Chart.js - load async as it's not immediately needed -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" async></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'zohoRed': '#E42527',
+                        'zohoDark': '#1A1A1A',
+                        'zohoGold': '#FFB81C',
+                        'zohoGray': '#F5F5F5',
+                        'lightGray': '#E0E0E0',
+                    },
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                        'cairo': ['Cairo', 'sans-serif'],
+                    },
+                    animation: {
+                        'slide-in-left': 'slideInLeft 0.6s ease-out',
+                        'slide-in-right': 'slideInRight 0.6s ease-out',
+                        'slide-in-up': 'slideInUp 0.6s ease-out',
+                        'scale-in': 'scaleIn 0.5s ease-out',
+                        'bounce-gentle': 'bounceGentle 2s ease-in-out infinite',
+                        'pulse-slow': 'pulseSlow 3s ease-in-out infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Critical CSS - Inline for immediate render -->
+    <style>
+        /* RTL Support */
+        html[dir="rtl"] body {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        html[dir="ltr"] body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Loading Screen - Critical CSS */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #E42527 0%, #FF6B6D 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+        }
+
+        #loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 20px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Language Toggle */
+        .lang-toggle {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 60;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            padding: 5px;
+            transition: all 0.3s ease;
+        }
+
+        html[dir="rtl"] .lang-toggle {
+            right: auto;
+            left: 20px;
+        }
+
+        .lang-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .lang-btn.active {
+            background: #E42527;
+            color: white;
+        }
+
+        .lang-btn:not(.active) {
+            color: #666;
+        }
+
+        .lang-btn:not(.active):hover {
+            background: #f0f0f0;
+        }
+
+        /* Main content initially hidden */
+        #main-content {
+            opacity: 0;
+            transition: opacity 0.6s ease-in;
+        }
+
+        #main-content.loaded {
+            opacity: 1;
+        }
+
+        /* Slide Management */
+        .slide {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .slide.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Enhanced Animations */
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes bounceGentle {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes pulseSlow {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            height: 6px;
+            background: linear-gradient(to right, #E0E0E0 0%, #E0E0E0 100%);
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #E42527 0%, #FF6B6D 100%);
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px rgba(228, 37, 39, 0.5);
+        }
+
+        /* Enhanced Floating Animation */
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            25% {
+                transform: translateY(-15px) rotate(2deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(-2deg);
+            }
+
+            75% {
+                transform: translateY(-15px) rotate(2deg);
+            }
+        }
+
+        /* Lazy load images - fade in when loaded */
+        img[loading="lazy"] {
+            opacity: 0;
+            transition: opacity 0.3s ease-in;
+        }
+
+        img[loading="lazy"].loaded {
+            opacity: 1;
+        }
+
+        /* Pulse Glow Enhancement */
+        .pulse-glow {
+            animation: pulseGlow 2s ease-in-out infinite alternate;
+            transition: transform 0.3s ease;
+        }
+
+        .pulse-glow:hover {
+            transform: scale(1.02);
+        }
+
+        @keyframes pulseGlow {
+            from {
+                box-shadow: 0 0 15px rgba(228, 37, 39, 0.3), 0 0 30px rgba(228, 37, 39, 0.1);
+            }
+
+            to {
+                box-shadow: 0 0 25px rgba(228, 37, 39, 0.6), 0 0 50px rgba(228, 37, 39, 0.2);
+            }
+        }
+
+        /* Bounce In Animation */
+        .bounce-in {
+            animation: bounceIn 0.8s ease-out;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.08);
+            }
+
+            70% {
+                transform: scale(0.95);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Stagger Animation for Lists */
+        .stagger-item {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .stagger-item:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .stagger-item:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .stagger-item:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .stagger-item:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .stagger-item:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .stagger-item:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Gradient Background Animation */
+        .gradient-animated {
+            background: linear-gradient(270deg, #E42527, #FF6B6D, #E42527);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+        }
+
+        @keyframes gradientShift {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        /* Tooltip Styles */
+        .tooltip {
+            position: relative;
+            cursor: help;
+        }
+
+        .tooltip-text {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #1A1A1A;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            white-space: nowrap;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 1000;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Interactive Quiz Styles */
+        .quiz-option {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .quiz-option:hover {
+            transform: translateX(10px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        html[dir="rtl"] .quiz-option:hover {
+            transform: translateX(-10px);
+        }
+
+        .quiz-option.selected {
+            background-color: #E42527 !important;
+            color: white;
+        }
+
+        .quiz-option.correct {
+            background-color: #10B981 !important;
+            color: white;
+        }
+
+        .quiz-option.incorrect {
+            background-color: #EF4444 !important;
+            color: white;
+        }
+
+        /* Pricing Calculator Animations */
+        .price-item {
+            transition: all 0.3s ease;
+        }
+
+        .price-item.selected {
+            border: 2px solid #E42527;
+            background-color: rgba(228, 37, 39, 0.05);
+        }
+
+        /* Confetti Animation for Completion */
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+            animation: confetti-fall 3s linear;
+        }
+
+        /* Navigation Enhancements */
+        .nav-btn {
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(228, 37, 39, 0.3);
+        }
+
+        .nav-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Slide Counter */
+        .slide-counter {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(26, 26, 26, 0.8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 50;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Timer Display */
+        .timer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+            z-index: 50;
+        }
+
+        html[dir="rtl"] .timer {
+            right: auto;
+            left: 20px;
+        }
+
+        /* Fullscreen Mode */
+        .fullscreen-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 50;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        html[dir="rtl"] .fullscreen-btn {
+            left: auto;
+            right: 20px;
+        }
+
+        .fullscreen-btn:hover {
+            background: #E42527;
+            color: white;
+        }
+
+        /* Notes Panel */
+        .notes-panel {
+            position: fixed;
+            right: -400px;
+            top: 0;
+            width: 400px;
+            height: 100%;
+            background: white;
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.2);
+            transition: right 0.4s ease;
+            z-index: 100;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        html[dir="rtl"] .notes-panel {
+            right: auto;
+            left: -400px;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
+            transition: left 0.4s ease;
+        }
+
+        .notes-panel.open {
+            right: 0;
+        }
+
+        html[dir="rtl"] .notes-panel.open {
+            right: auto;
+            left: 0;
+        }
+
+        /* Scenario Cards */
+        .scenario-card {
+            background: #f8f8f8;
+            border-left: 4px solid #B80000;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+        }
+
+        html[dir="rtl"] .scenario-card {
+            border-left: none;
+            border-right: 4px solid #B80000;
+        }
+
+        .scenario-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ROI Calculator Styles */
+        .roi-calc {
+            background: #f8f8f8;
+            border-left: 5px solid #B80000;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        html[dir="rtl"] .roi-calc {
+            border-left: none;
+            border-right: 5px solid #B80000;
+        }
+
+        .roi-calc input {
+            width: 100%;
+            padding: 10px;
+            margin: 6px 0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .roi-calc button {
+            background: #B80000;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            display: block;
+            margin: 15px auto;
+            transition: all 0.3s ease;
+        }
+
+        .roi-calc button:hover {
+            background: #8B0000;
+            transform: scale(1.05);
+        }
+
+        .roi-result {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .roi-result div {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .roi-total {
+            background: #B80000;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        /* Print Styles */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+
+            .slide {
+                display: block !important;
+                page-break-after: always;
+                opacity: 1 !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-zohoGray text-zohoDark">
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader"></div>
+        <div class="loading-text">جاري تحميل تدريب Zoho One...</div>
+        <div style="color: white; margin-top: 10px; font-size: 14px; opacity: 0.8;">جاري تجهيز تجربتك</div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <!-- Language Toggle -->
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar fixed top-0 left-0 w-full z-50 no-print">
+            <div class="progress" id="progress" style="width: 0%;"></div>
+        </div>
+
+        <!-- Fullscreen Button -->
+        <button id="fullscreenBtn" class="fullscreen-btn no-print">
+            <i class="fas fa-expand text-xl"></i>
+        </button>
+
+        <!-- Timer -->
+        <div class="timer no-print">
+            <i class="fas fa-clock text-zohoRed mr-2"></i>
+            <span id="timer">00:00</span>
+        </div>
+
+        <!-- Navigation -->
+        <div class="fixed left-6 top-1/2 transform -translate-y-1/2 z-40 flex flex-col space-y-3 no-print" id="navigation">
+            <button id="prevBtn" class="nav-btn bg-white p-3 rounded-full shadow-lg hover:bg-zohoRed hover:text-white transition-all">
+                <i class="fas fa-chevron-up"></i>
+            </button>
+            <div class="bg-white p-2 rounded-full shadow-lg text-center font-semibold text-sm">
+                <span id="currentSlideNum">1</span>/<span id="totalSlides">25</span>
+            </div>
+            <button id="nextBtn" class="nav-btn bg-white p-3 rounded-full shadow-lg hover:bg-zohoRed hover:text-white transition-all">
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <button id="notesBtn" class="nav-btn bg-white p-3 rounded-full shadow-lg hover:bg-zohoGold hover:text-white transition-all mt-4">
+                <i class="fas fa-sticky-note"></i>
+            </button>
+        </div>
+
+        <!-- Slide Counter -->
+        <div class="slide-counter no-print">
+            <span id="slideTitle">مرحباً</span>
+        </div>
+
+        <!-- Notes Panel -->
+        <div class="notes-panel no-print" id="notesPanel">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-zohoRed">ملاحظات التدريب</h3>
+                <button id="closeNotes" class="text-gray-500 hover:text-zohoRed">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <textarea id="notesTextarea" class="w-full h-full border border-gray-300 rounded-lg p-4 resize-none" placeholder="سجل ملاحظاتك خلال التدريب..."></textarea>
+            <button id="downloadNotes" class="mt-4 w-full bg-zohoRed text-white py-2 rounded-lg hover:bg-red-700 transition-all">
+                <i class="fas fa-download mr-2"></i><span>تحميل الملاحظات</span>
+            </button>
+        </div>
+
+        <!-- Slides Container -->
+        <div class="slides-container">
+            <!-- Slide 1: Enhanced Title -->
+            <section class="slide active fade-in min-h-screen flex flex-col" data-title-ar="مرحباً">
+                <div class="flex-grow flex flex-col items-center justify-center px-8 py-16 text-center">
+                    <div class="flex justify-center items-center space-x-8 mb-12 animate-slide-in-up">
+                        <img src="https://ik.imagekit.io/weo7pcw8v/image-removebg-preview%20(4).png?updatedAt=1761788896176" alt="e& Logo" class="h-24 floating" loading="lazy">
+                        <div class="text-5xl text-zohoRed animate-pulse-slow">×</div>
+                        <img src="https://ik.imagekit.io/weo7pcw8v/image-removebg-preview%20(3).png?updatedAt=1761788895997" alt="Zoho One Logo" class="h-24 floating" loading="lazy" style="animation-delay: 1s;">
+                    </div>
+                    <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-slide-in-left">
+                        <span>Zoho One</span> <span class="text-zohoRed gradient-animated bg-clip-text text-transparent">
+                            <spann>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-gray-600 max-w-3xl mb-12 animate-slide-in-right">حوّل أسلوب مبيعاتك وافتح آفاق النمو الهائل</p>
+                    <div class="pulse-glow bg-white p-8 rounded-2xl shadow-xl max-w-2xl animate-scale-in">
+                        <h2 class="text-2xl font-semibold mb-6 flex items-center justify-center">
+                            <i class="fas fa-route text-zohoRed mr-3"></i>
+                            <span>رحلة التدريب اليوم</span>
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-right">
+                            <div class="flex items-start space-x-2 stagger-item">
+                                <div class="bg-zohoGold rounded-full p-2 mt-1 animate-bounce-gentle"><i class="fas fa-play text-white text-xs"></i></div>
+                                <div>
+                                    <span class="font-medium">الأساس</span>
+                                    <p class="text-sm text-gray-600">أساسيات SaaS و Zoho</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-2 stagger-item">
+                                <div class="bg-zohoGold rounded-full p-2 mt-1 animate-bounce-gentle" style="animation-delay: 0.2s;"><i class="fas fa-chart-bar text-white text-xs"></i></div>
+                                <div>
+                                    <span class="font-medium">التعمق</span>
+                                    <p class="text-sm text-gray-600">6 تطبيقات منفصلة</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-2 stagger-item">
+                                <div class="bg-zohoGold rounded-full p-2 mt-1 animate-bounce-gentle" style="animation-delay: 0.4s;"><i class="fas fa-flag text-white text-xs"></i></div>
+                                <div>
+                                    <span class="font-medium">الإتقان</span>
+                                    <p class="text-sm text-gray-600">استراتيجية Zoho One</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center pb-8">
+                    <button class="next-btn gradient-animated text-white px-10 py-4 rounded-full font-semibold transition-all transform hover:scale-105 shadow-lg">
+                        <span>ابدأ التدريب</span> <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Slide 2: Three Scenarios -->
+            <section class="slide fade-in min-h-screen flex flex-col justify-center px-8 py-16" data-title-ar="السيناريوهات الثلاثة">
+                <div class="max-w-4xl mx-auto w-full">
+                    <div class="flex items-center mb-8 animate-slide-in-left">
+                        <img src="https://ik.imagekit.io/weo7pcw8v/image-removebg-preview%20(3).png?updatedAt=1761788895997" class="h-16 mr-4" alt="Zoho">
+                        <h2 class="text-4xl font-bold">
+                            <span class="text-zohoRed">السيناريوهات الثلاثة</span>
+                        </h2>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="scenario-card stagger-item">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-book text-zohoRed text-2xl mr-3"></i>
+                                <h3 class="text-xl font-bold">السيناريو 1: عمل يدوي كامل</h3>
+                            </div>
+                            <p class="text-gray-700">دفاتر ورقية وملفات</p>
+                        </div>
+
+                        <div class="scenario-card stagger-item">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-file-excel text-zohoRed text-2xl mr-3"></i>
+                                <h3 class="text-xl font-bold">السيناريو 2: يستخدم Excel</h3>
+                            </div>
+                            <p class="text-gray-700">جداول بيانات لإدارة البيانات</p>
+                        </div>
+
+                        <div class="scenario-card stagger-item">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-laptop-code text-zohoRed text-2xl mr-3"></i>
+                                <h3 class="text-xl font-bold">السيناريو 3: نظام منافس</h3>
+                            </div>
+                            <p class="text-gray-700">Odoo أو SAP أو غيرهما</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 bg-zohoGold bg-opacity-10 rounded-2xl p-6 border-2 border-zohoGold animate-scale-in">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-lightbulb text-zohoGold mr-2 text-2xl"></i>
+                            <span>الافتتاح السريع</span>
+                        </h3>
+                        <p class="text-lg italic">"أفهم أنكم تديرون عملياتكم بشكل تقليدي... كم ساعة يومياً يقضيها فريقك في البحث عن معلومة؟"</p>
+                    </div>
+
+                    <div class="mt-6">
+                        <img src="https://ik.imagekit.io/yyunfaidz/e&%20-Logo.png?updatedAt=1761817940449" class="h-12 mx-auto opacity-50" alt="e& Logo">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 3: Pain Points -->
+            <section class="slide fade-in min-h-screen flex flex-col justify-center px-8 py-16" data-title-ar="نقالضعف">
+                <div class="max-w-4xl mx-auto w-full">
+                    <div class="flex items-center mb-8 animate-slide-in-left">
+                        <img src="https://ik.imagekit.io/weo7pcw8v/image-removebg-preview%20(3).png?updatedAt=1761788895997" class="h-16 mr-4" alt="Zoho">
+                        <h2 class="text-4xl font-bold">
+                            <span class="text-zohoRed">نقاط الضعف</span>
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="scenario-card stagger-item">
+                            <div class="flex items-center">
+                                <i class="fas fa-clock text-zohoRed text-3xl mr-4"></i>
+                                <div>
+                                    <h3 class="font-bold text-lg">ضياع الوقت في البحث</h3>
+                                    <p class="text-sm text-gray-600">ساعات تضيع في إيجاد المعلومات</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="scenario-card stagger-item">
+                            <div class="flex items-center">
+                                <i class="fas fa-database text-zohoRed text-3xl mr-4"></i>
+                                <div>
+                                    <h3 class="font-bold text-lg">فقدان أو تلف البيانات</h3>
+                                    <p class="text-sm text-gray-600">معلومات حيوية مفقودة</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="scenario-card stagger-item">
+                            <div class="flex items-center">
+                                <i class="fas fa-users text-zohoRed text-3xl mr-4"></i>
+                                <div>
+                                    <h3 class="font-bold text-lg">صعوبة التنسيق</h3>
+                                    <p class="text-sm text-gray-600">مشاكل في التعاون</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="scenario-card stagger-item">
+                            <div class="flex items-center">
+                                <i class="fas fa-chart-bar text-zohoRed text-3xl mr-4"></i>
+                                <div>
+                                    <h3 class="font-bold text-lg">أخطاء التقارير اليدوية</h3>
+                                    <p class="text-sm text-gray-600">تقارير خاطئة ومتأخرة</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="scenario-card stagger-item">
+                            <div class="flex items-center">
+                                <i class="fas fa-exclamation-circle text-zohoRed text-3xl mr-4"></i>
+                                <div>
+                                    <h3 class="font-bold text-lg">أخطاء بشرية متكررة</h3>
+                                    <p class="text-sm text-gray-600">أخطاء تكلف المال</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="scenario-card stagger-item">
+                            <div class="flex items-center">
+                                <i class="fas fa-ban text-zohoRed text-3xl mr-4"></i>
+                                <div>
+                                    <h3 class="font-bold text-lg">غياب الأتمتة</h3>
+                                    <p class="text-sm text-gray-600">مهام يدوية متكررة</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <img src="https://ik.imagekit.io/yyunfaidz/e&%20-Logo.png?updatedAt=1761817940449" class="h-12 mx-auto opacity-50" alt="e& Logo">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 4: Solution Matching Guide -->
+            <section class="slide fade-in min-h-screen flex flex-col justify-center px-8 py-16" data-title-ar="دليل المطابقة">
+                <div class="max-w-5xl mx-auto w-full">
+                    <div class="flex items-center mb-8 animate-slide-in-left">
+                        <img src="https://ik.imagekit.io/weo7pcw8v/image-removebg-preview%20(3).png?updatedAt=1761788895997" class="h-16 mr-4" alt="Zoho">
+                        <h2 class="text-4xl font-bold">
+                            <span class="text-zohoRed">دليل المطابقة السريع</span>
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="stagger-item">
+                            <div class="bg-zohoRed bg-opacity-10 rounded-lg p-4 mb-2">
+                                <p class="font-semibold text-lg">إدارة العملاء والمبيعات</p>
+                            </div>
+                            <div class="flex items-center text-xl pl-4">
+                                <i class="fas fa-arrow-right text-zohoRed mr-3"></i>
+                                <span class="font-bold">Zoho CRM</span>
+                            </div>
+                        </div>
+
+                        <div class="stagger-item">
+                            <div class="bg-zohoRed bg-opacity-10 rounded-lg p-4 mb-2">
+                                <p class="font-semibold text-lg">المحاسبة والفوترة الإلكترونية</p>
+                            </div>
+                            <div class="flex items-center text-xl pl-4">
+                                <i class="fas fa-arrow-right text-zohoRed mr-3"></i>
+                                <span class="font-bold">Zoho Books</span>
+                            </div>
+                        </div>
+
+                        <div class="stagger-item">
+                            <div class="bg-zohoRed bg-opacity-10 rounded-lg p-4 mb-2">
+                                <p class="font-semibold text-lg">دعم العملاء وإدارة الشكاوى</p>
+                            </div>
+                            <div class="flex items-center text-xl pl-4">
+                                <i class="fas fa-arrow-right text-zohoRed mr-3"></i>
+                                <span class="font-bold">Zoho Desk</span>
+                            </div>
+                        </div>
+
+                        <div class="stagger-item">
+                            <div class="bg-zohoRed bg-opacity-10 rounded-lg p-4 mb-2">
+                                <p class="font-semibold text-lg">إدارة المخزون والمستودعات</p>
+                            </div>
+                            <div class="flex items-center text-xl pl-4">
+                                <i class="fas fa-arrow-right text-zohoRed mr-3"></i>
+                                <span class="font-bold">Zoho Inventory</span>
+                            </div>
+                        </div>
+
+                        <div class="stagger-item">
+                            <div class="bg-zohoRed bg-opacity-10 rounded-lg p-4 mb-2">
+                                <p class="font-semibold text-lg">بريد إلكتروني احترافي + تعاون</p>
+                            </div>
+                            <div class="flex items-center text-xl pl-4">
+                                <i class="fas fa-arrow-right text-zohoRed mr-3"></i>
+                                <span class="font-bold">Zoho Workplace</span>
+                            </div>
+                        </div>
+
+                        <div class="stagger-item">
+                            <div class="bg-zohoRed bg-opacity-10 rounded-lg p-4 mb-2">
+                                <p class="font-semibold text-lg">موقع إلكتروني بدون برمجة</p>
+                            </div>
+                            <div class="flex items-center text-xl pl-4">
+                                <i class="fas fa-arrow-right text-zohoRed mr-3"></i>
+                                <span class="font-bold">Zoho Sites</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 bg-zohoGold bg-opacity-20 rounded-2xl p-6 border-2 border-zohoGold animate-scale-in">
+                        <div class="flex items-center justify-center">
+                            <i class="fas fa-star text-zohoGold text-3xl mr-4"></i>
+                            <div class="text-center">
+                                <p class="text-xl font-bold">تحتاج 3 منتجات أو أكثر؟</p>
+                                <p class="text-2xl font-bold text-zohoRed mt-2">Zoho One</p>
+                                <p class="text-gray-600">(45+ تطبيق بسعر تطبيق واحد)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <img src="https://ik.imagekit.io/yyunfaidz/e&%20-Logo.png?updatedAt=1761817940449" class="h-12 mx-auto opacity-50" alt="e& Logo">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 5: Scenario 1 Details -->
+            <section class="slide fade-in min-h-screen flex flex-col justify-center px-8 py-16" data-title-ar="السيناريو 1: عمل يدوي">
+                <div class="max-w-4xl mx-auto w-full">
+                    <div class="flex items-center mb-8 animate-slide-in-left">
+                        <img src="https://ik.imagekit.io/weo7pcw8v/image-removebg-preview%20(3).png?updatedAt=1761788895997" class="h-16 mr-4" alt="Zoho">
+                        <h2 class="text-4xl font-bold">
+                            <span class="text-zohoRed">السيناريو 1: العميل يعمل يدوياً بالكامل</span>
+                        </h2>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-lg p-8 mb-6 animate-scale-in">
+                        <h3 class="text-2xl font-bold mb-4 text-zohoRed">الافتتاح</h3>
+                        <p class="text-xl italic mb-6">"أفهم أنكم تديرون عملياتكم بشكل تقليدي... كم ساعة يومياً يقضيها فريقك في البحث عن معلومات العملاء أو الفواتير؟"</p>
+
+                        <h3 class="text-xl font-bold mb-4 flex items-center">
+                            <i class="fas fa-question-circle text-zohoGold mr-2"></i>
+                            <span>الأسئلة الاستكشافية</span>
+                        </h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start stagger-item">
+                                <i class="fas fa-check-circle text-zohoGold mr-3 mt-1"></i>
+                                <span>كيف تحفظون معلومات العملاء؟ في دفاتر أم ملفات؟</span>
+                            </li>
+                            <li class="flex items-start stagger-item">
+                                <i class="fas fa-check-circle text-zohoGold mr-3 mt-1"></i>
+                                <span>ماذا يحدث إذا غاب الموظف المسؤول عن ملف معين؟</span>
+                            </li>
+                            <li class="flex items-start stagger-item">
+                                <i class="fas fa-check-circle text-zohoGold mr-3 mt-1"></i>
+                                <span>كم مرة واجهتم مشكلة في إيجاد معلومة قديمة؟</span>
+                            </li>
+                            <li class="flex items-start stagger-item">
+                                <i class="fas fa-check-circle text-zohoGold mr-3 mt-1"></i>
+                                <span>هل سبق وفقدتم بيانات مهمة؟</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-6">
+                        <img src="https://ik.imagekit.io/yyunfaidz/e&%20-Logo.png?updatedAt=1761817940449" class="h-12 mx-auto opacity-50" alt="e& Logo">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 6: Scenario 2 Details -->
+            <section class="slide fade-in min-h-screen flex flex-col justify-center px-8 py-16" data-title-ar="السيناريو 2: مستخدمو Excel">
+                <div class="max-w-4xl mx-auto w-full">
+                    <div class="flex items-center mb-8 animate-slide-in-left">
+                        <img src="https://ik.imagekit.io/weo7pcw8v/image-removebg-preview%20(3).png?updatedAt=1761788895997" class="h-16 mr-4" alt="Zoho">
+                        <h2 class="text-4xl font-bold">
+                            <span class="text-zohoRed">السيناريو 2: العميل يستخدم Excel</span>
+                        </h2>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-lg p-8 mb-6 animate-scale-in">
+                        <h3 class="text-2xl font-bold mb-4 text-zohoRed">الافتتاح</h3>
+                        <p class="text-xl italic mb-6">"Excel أداة رائعة وأنتم بالفعل خطوة متقدمة... لكن كم شخص يمكنه العمل على نفس الملف في نفس الوقت دون مشاكل؟"</p>
+
+                        <h3 class="text-xl font-bold mb-4 flex items-center">
+                            <i class="fas fa-question-circle text-zohoGold mr-2"></i>
+                            <span>أسئلة استكشافية</span>
+                        </h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start stagger-item">
+                                <i class="fas fa-check-circle text-zohoGold mr-3 mt-1"></i>
+                                <span>كم ملف Excel لديكم لإدارة العمل؟</span>
+                            </li>
+                            <li class="flex items-start stagger-item">
+                                <i class="fas fa-check-circle text-zohoGold mr-3 mt-1"></i>
+                                <span>هل سبق وحصل تضارب في الإصدارات؟</span>
+                            </li>
+                            <li class="flex items-start stagger-item">
+                                <i class="fas fa-check-circle text-zohoGold mr-3 mt-1"></i>
+                                <span>كيف تشاركون الملفات بين الموظفين؟</span>
+                            </li>
+                            <li class="flex items-start stagger-item">
+                                <i class="fas fa-check-circle text-zohoGold mr-3 mt-1"></i>
+                                <span>كم وقت يستغرق إعداد التقارير الشهرية؟</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-zohoRed bg-opacity-10 rounded-2xl p-6 border-2 border-zohoRed animate-scale-in">
+                        <h3 class="text-xl font-bold mb-4 text-zohoRed">نقاط الضعف متوقعة</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div class="flex items-center stagger-item">
+                                <i class="fas fa-times-circle text-zohoRed mr-2"></i>
+                                <span>ضعف العمل التعاوني الفعّال</span>
+                            </div>
+                            <div class="flex items-center stagger-item">
+                                <i class="fas fa-times-circle text-zohoRed mr-2"></i>
+                                <span>تضارب الإصدارات</span>
+                            </div>
+                            <div class="flex items-center stagger-item">
+                                <i class="fas fa-times-circle text-zohoRed mr-2"></i>
+                                <span>فقدان الملفات أو فسادها</span>
+                            </div>
+                            <div class="flex items-center stagger-item">
+                                <i class="fas fa-times-circle text-zohoRed mr-2"></i>
+                                <span>غياب الأتمتة</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <img src="https://ik.imagekit.io/yyunfaidz/e&%20-Logo.png?updatedAt=1761817940449" class="h-12 mx-auto opacity-50" alt="e& Logo">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 7: Scenario 3 Details -->
+            <section class="slide fade-in min-h-screen flex flex-col justify-center px-8 py-16" data-title-ar="السيناريو 3: نظام منافس">
+                <div class="max-w-4xl mx-auto w-full">
+                    <div class="flex items-center mb-8 animate-slide-in-left">
+                        <img src="https://ik.imagekit.io/weo7pcw8v/image-removebg-preview%20(3).png?updatedAt=1761788895997" class="h-16 mr-4" alt="Zoho">
+                        <h2 class="text-4xl font-bold">
+                            <span class="text-zohoRed">السيناريو 3: العميل يستخدم نظام منافس</span>
+                        </h2>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-lg p-8 mb-6 animate-scale-in">
+                        <h3 class="text-2xl font-bold mb-4 text-zohoRed">الافتتاح</h3>
+                        <p class="text-xl italic mb-6">"رائع أنكم تستخدمون نظاماً إلكترونياً... ما مدى رضاكم عنه؟ ما الذي تتمنون تحسينه؟"</p>
+
+                        <h3 class="text-xl font-bold mb-4 flex items-center">
+                            <i class="fas fa-question-circle text-zohoGold mr-2"></i>
+                            <span>أسئلة استكشافية</span>
+                        </h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start stagger-item">
+                                <i class="fas fa-check-circle text-zohoGold mr-3 mt-1"></i>
+                                <span>منذ متى وأنتم على النظام الحالي؟</span>
+                            </li>
+                            <li class="flex items-start stagger-item">
+                                <i class="fas fa-check-circle text-zohoGold mr-3 mt-1"></i>
+                                <span>ما الميزات التي تعجبكم؟</span>
+                            </li>
+                            <li class="flex items-start stagger-item">
+                                <i class="fas fa-check-circle text-zohoGold mr-3 mt-1"></i>
+                                <span>ما التحديات أو الصعوبات التي تواجهونها؟</span>
+                            </li>
+                            <li class="flex items-start stagger-item">
+                                <i class="fas fa-check-circle text-zohoGold mr-3 mt-1"></i>
+                                <span>كم يكلفكم (ترخيص + صيانة + دعم) شهرياً؟</span>
+                            </li>
+                            <li class="flex items-start stagger-item">
+                                <i class="fas fa-check-circle text-zohoGold mr-3 mt-1"></i>
+                                <span>هل تحتاجون لمطورين للتعديلات؟</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-6">
+                        <img src="https://ik.imagekit.io/yyunfaidz/e&%20-Logo.png?updatedAt=1761817940449" class="h-12 mx-auto opacity-50" alt="e& Logo">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 8: Objections & Quick Responses -->
+            <section class="slide fade-in min-h-screen flex flex-col justify-center px-8 py-16" data-title-ar="معالجة الاعتراضات">
+                <div class="max-w-5xl mx-auto w-full">
+                    <div class="flex items-center mb-8 animate-slide-in-left">
+                        <img src="https://ik.imagekit.io/weo7pcw8v/image-removebg-preview%20(3).png?updatedAt=1761788895997" class="h-16 mr-4" alt="Zoho">
+                        <h2 class="text-4xl font-bold">
+                            <span class="text-zohoRed">الاعتراضات والرد السريع</span>
+                        </h2>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="stagger-item">
+                            <div class="bg-zohoRed text-white rounded-lg p-4 mb-2 font-bold text-lg">
+                                <span>الاعتراض: السعر غالي</span>
+                            </div>
+                            <div class="scenario-card">
+                                <p>"كم تكلفكم المشاكل الحالية؟ ضياع 10 ساعات × 4 أسابيع × الراتب = ؟ Zoho استثمار وليس تكلفة."</p>
+                            </div>
+                        </div>
+
+                        <div class="stagger-item">
+                            <div class="bg-zohoRed text-white rounded-lg p-4 mb-2 font-bold text-lg">
+                                <span>الاعتراض: نحن راضون عن الطريقة الحالية</span>
+                            </div>
+                            <div class="scenario-card">
+                                <p>"ممتاز! السؤال: هل يمكنكم أن تكونوا أفضل؟ تخيلوا توفير 3 ساعات يومياً أو زيادة المبيعات 20%."</p>
+                            </div>
+                        </div>
+
+                        <div class="stagger-item">
+                            <div class="bg-zohoRed text-white rounded-lg p-4 mb-2 font-bold text-lg">
+                                <span>الاعتراض: سنقارن مع المنافسين</span>
+                            </div>
+                            <div class="scenario-card">
+                                <p>"أعطني 3 دقائق أرسل لك جدول مقارنة مع Odoo/SAP يوفر عليك الوقت."</p>
+                            </div>
+                        </div>
+
+                        <div class="stagger-item">
+                            <div class="bg-zohoRed text-white rounded-lg p-4 mb-2 font-bold text-lg">
+                                <span>الاعتراض: نحتاج وقت للتفكير</span>
+                            </div>
+                            <div class="scenario-card">
+                                <p>"ما السؤال الأكبر لديكم الآن؟ عرض توضيحي 15 دقيقة الأحد أم الاثنين؟"</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 bg-zohoGold bg-opacity-20 rounded-2xl p-6 border-2 border-zohoGold animate-scale-in">
+                        <h3 class="text-xl font-bold mb-3 flex items-center">
+                            <i class="fas fa-handshake text-zohoGold mr-2 text-2xl"></i>
+                            <span>ختام المكالمة</span>
+                        </h3>
+                        <p class="text-lg font-semibold">"الخطوة التالية: عرض توضيحي 15 دقيقة. الأحد 10 ص أم الاثنين 3 م؟"</p>
+                    </div>
+
+                    <div class="mt-6">
+                        <img src="https://ik.imagekit.io/yyunfaidz/e&%20-Logo.png?updatedAt=1761817940449" class="h-12 mx-auto opacity-50" alt="e& Logo">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 9: ROI Calculator -->
+            <section class="slide fade-in min-h-screen flex flex-col justify-center px-8 py-16" data-title-ar="حاسبة التوفير">
+                <div class="max-w-4xl mx-auto w-full">
+                    <div class="flex items-center mb-8 animate-slide-in-left">
+                        <img src="https://ik.imagekit.io/weo7pcw8v/image-removebg-preview%20(3).png?updatedAt=1761788895997" class="h-16 mr-4" alt="Zoho">
+                        <h2 class="text-4xl font-bold">
+                            <span class="text-zohoRed">حاسبة التوفير السريعة</span>
+                        </h2>
+                    </div>
+
+                    <div class="roi-calc animate-scale-in">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="font-semibold">عدد الموظفين:</label>
+                                <input type="number" id="emp" value="5" min="1">
+                            </div>
+                            <div>
+                                <label class="font-semibold">الراتب الشهري (جنيه):</label>
+                                <input type="number" id="sal" value="5000" min="1000">
+                            </div>
+                            <div>
+                                <label class="font-semibold">ساعات ضائعة/موظف:</label>
+                                <input type="number" id="wh" value="20" min="0">
+                            </div>
+                            <div>
+                                <label class="font-semibold">مبيعات شهرية (جنيه):</label>
+                                <input type="number" id="ms" value="100000" min="0">
+                            </div>
+                            <div>
+                                <label class="font-semibold">تكلفة الأخطاء (جنيه):</label>
+                                <input type="number" id="ec" value="2000" min="0">
+                            </div>
+                            <div>
+                                <label class="font-semibold">مبيعات مفقودة (جنيه):</label>
+                                <input type="number" id="ls" value="15000" min="0">
+                            </div>
+                        </div>
+
+                        <button onclick="calculateROI()">
+                            <span>احسب التوفير</span>
+                        </button>
+
+                        <div class="roi-result">
+                            <div>
+                                <span>توفير وقت الموظفين:</span>
+                                <span id="ts" class="font-bold text-green-600">0 EGP</span>
+                            </div>
+                            <div>
+                                <span>زيادة المبيعات:</span>
+                                <span id="si" class="font-bold text-green-600">0 EGP</span>
+                            </div>
+                            <div>
+                                <span>توفير الأخطاء:</span>
+                                <span id="es" class="font-bold text-green-600">0 EGP</span>
+                            </div>
+                            <div>
+                                <span>استعادة المبيعات:</span>
+                                <span id="rs" class="font-bold text-green-600">0 EGP</span>
+                            </div>
+                        </div>
+
+                        <div class="roi-total">
+                            <span>إجمالي التوفير الشهري:</span> <span id="tot">0</span> EGP
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <img src="https://ik.imagekit.io/yyunfaidz/e&%20-Logo.png?updatedAt=1761817940449" class="h-12 mx-auto opacity-50" alt="e& Logo">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 10: Pricing Comparison Calculator (from original) -->
+            <section class="slide fade-in min-h-screen flex flex-col justify-center px-8 py-16" data-title-ar="حاسبة الأسعار">
+                <div class="max-w-6xl mx-auto">
+                    <div class="flex items-center mb-2 animate-slide-in-left">
+                        <div class="bg-zohoRed text-white rounded-full w-10 h-10 flex items-center justify-center mr-3 font-bold">10</div>
+                        <h2 class="text-3xl font-bold">
+                            <span>حاسبة الأسعار</span> <span class="text-zohoRed">التفاعلية</span>
+                        </h2>
+                    </div>
+                    <p class="text-gray-600 mb-8 animate-slide-in-left">قم ببناء باقة عميلك المخصصة وشاهد ميزة Zoho One</p>
+
+                    <!-- Interactive Calculator -->
+                    <div class="bg-white rounded-2xl shadow-lg p-8 mb-8 animate-scale-in">
+                        <h3 class="text-2xl font-bold mb-6 text-center">اختر التطبيقات التي يحتاجها عميلك</h3>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                            <div class="price-item border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-zohoRed transition-all" data-app="workplace" data-price="135">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <input type="checkbox" class="app-checkbox w-5 h-5 text-zohoRed mr-3">
+                                        <div>
+                                            <p class="font-semibold">Zoho Workplace</p>
+                                            <p class="text-sm text-gray-500">135 EGP/month</p>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-briefcase text-zohoRed text-2xl"></i>
+                                </div>
+                            </div>
+
+                            <div class="price-item border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-zohoRed transition-all" data-app="desk" data-price="700">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <input type="checkbox" class="app-checkbox w-5 h-5 text-zohoRed mr-3">
+                                        <div>
+                                            <p class="font-semibold">Zoho Desk</p>
+                                            <p class="text-sm text-gray-500">700 EGP/month</p>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-headset text-zohoRed text-2xl"></i>
+                                </div>
+                            </div>
+
+                            <div class="price-item border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-zohoRed transition-all" data-app="crm" data-price="700">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <input type="checkbox" class="app-checkbox w-5 h-5 text-zohoRed mr-3">
+                                        <div>
+                                            <p class="font-semibold">Zoho CRM</p>
+                                            <p class="text-sm text-gray-500">700 EGP/month</p>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-chart-line text-zohoRed text-2xl"></i>
+                                </div>
+                            </div>
+
+                            <div class="price-item border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-zohoRed transition-all" data-app="sites" data-price="280">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <input type="checkbox" class="app-checkbox w-5 h-5 text-zohoRed mr-3">
+                                        <div>
+                                            <p class="font-semibold">Zoho Sites</p>
+                                            <p class="text-sm text-gray-500">280 EGP/month</p>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-globe text-zohoRed text-2xl"></i>
+                                </div>
+                            </div>
+
+                            <div class="price-item border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-zohoRed transition-all" data-app="inventory" data-price="1048.5">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <input type="checkbox" class="app-checkbox w-5 h-5 text-zohoRed mr-3">
+                                        <div>
+                                            <p class="font-semibold">Zoho Inventory</p>
+                                            <p class="text-sm text-gray-500">1,048.5 EGP/month</p>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-boxes text-zohoRed text-2xl"></i>
+                                </div>
+                            </div>
+
+                            <div class="price-item border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-zohoRed transition-all" data-app="books" data-price="243">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <input type="checkbox" class="app-checkbox w-5 h-5 text-zohoRed mr-3">
+                                        <div>
+                                            <p class="font-semibold">Zoho Books</p>
+                                            <p class="text-sm text-gray-500">243 EGP/month</p>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-book text-zohoRed text-2xl"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Comparison Results -->
+                        <div class="gradient-animated rounded-2xl p-6 text-white">
+                            <h3 class="text-2xl font-bold mb-6 text-center">مقارنة الأسعار</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div class="bg-white bg-opacity-20 rounded-xl p-6">
+                                    <h4 class="font-semibold mb-3 text-center">إجمالي المنفصلة</h4>
+                                    <p class="text-4xl font-bold text-center" id="standalone-total">0 EGP</p>
+                                    <p class="text-sm text-center mt-2" id="apps-count">0 تطبيقات محددة</p>
+                                </div>
+                                <div class="bg-white bg-opacity-20 rounded-xl p-6 border-4 border-yellow-300">
+                                    <h4 class="font-semibold mb-3 text-center">Zoho One</h4>
+                                    <p class="text-4xl font-bold text-center">1,575 EGP</p>
+                                    <p class="text-sm text-center mt-2">55+ تطبيق مشمول</p>
+                                </div>
+                                <div class="bg-white bg-opacity-20 rounded-xl p-6">
+                                    <h4 class="font-semibold mb-3 text-center">توفيرك</h4>
+                                    <p class="text-4xl font-bold text-center text-green-300" id="savings-amount">0 EGP</p>
+                                    <p class="text-sm text-center mt-2" id="extra-apps">+ 55 تطبيق إضافي</p>
+                                </div>
+                            </div>
+
+                            <div class="mt-6 text-center" id="recommendation-message"></div>
+                        </div>
+                    </div>
+
+                    <!-- Sales Scripts by Scenario -->
+                    <div class="bg-zohoGold bg-opacity-10 rounded-2xl p-6 border-2 border-zohoGold animate-scale-in">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-comments text-zohoGold mr-2 text-2xl"></i>
+                            <span>السكريبت البيعي الموصى به</span>
+                        </h3>
+                        <div id="sales-script" class="bg-white rounded-lg p-4">
+                            <p class="text-gray-600">اختر التطبيقات أعلاه لرؤية السكريبت البيعي الموصى به لهذا السيناريو.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 11: Final Completion -->
+            <section class="slide fade-in min-h-screen flex flex-col justify-center px-8 py-16" data-title-ar="مبروك!">
+                <div class="max-w-4xl mx-auto text-center">
+                    <div class="bg-white rounded-2xl shadow-lg p-12 animate-scale-in">
+                        <div class="text-green-500 text-7xl mb-6 animate-bounce-gentle">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <h2 class="text-5xl font-bold mb-4 animate-slide-in-up">مبروك!</h2>
+                        <p class="text-2xl text-gray-600 mb-8 animate-slide-in-up">لقد أكملت تدريب إمبيعات Zoho One</p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                            <div class="bg-zohoGray rounded-xl p-6 stagger-item hover:bg-zohoRed hover:text-white transition-all">
+                                <div class="text-zohoRed text-4xl mb-2">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                                <p class="font-semibold text-lg">خبير المنتجات</p>
+                                <p class="text-sm mt-2 opacity-75">خبير في 6 تطبيقات منفصلة</p>
+                            </div>
+                            <div class="bg-zohoGray rounded-xl p-6 stagger-item hover:bg-zohoRed hover:text-white transition-all">
+                                <div class="text-zohoRed text-4xl mb-2">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <p class="font-semibold text-lg">بطل المبيعات</p>
+                                <p class="text-sm mt-2 opacity-75">خبير استراتيجيات التسعير</p>
+                            </div>
+                            <div class="bg-zohoGray rounded-xl p-6 stagger-item hover:bg-zohoRed hover:text-white transition-all">
+                                <div class="text-zohoRed text-4xl mb-2">
+                                    <i class="fas fa-rocket"></i>
+                                </div>
+                                <p class="font-semibold text-lg">داعم Zoho One</p>
+                                <p class="text-sm mt-2 opacity-75">خبير معالجة الاعتراضات</p>
+                            </div>
+                        </div>
+
+                        <div class="gradient-animated rounded-2xl p-8 text-white mb-8">
+                            <h3 class="text-3xl font-bold mb-6">الخطوات التالية</h3>
+                            <div class="space-y-4 text-lg">
+                                <p class="flex items-center justify-center">
+                                    <i class="fas fa-check-circle mr-3 text-2xl"></i>
+                                    <span>تدرب على السكريبتات البيعية مع فريقك</span>
+                                </p>
+                                <p class="flex items-center justify-center">
+                                    <i class="fas fa-check-circle mr-3 text-2xl"></i>
+                                    <span>استخدم حاسبة الأسعار في اجتماعات العملاء الحقيقية</span>
+                                </p>
+                                <p class="flex items-center justify-center">
+                                    <i class="fas fa-check-circle mr-3 text-2xl"></i>
+                                    <span>جدول جلسات التدريب المتابعة</span>
+                                </p>
+                                <p class="flex items-center justify-center">
+                                    <i class="fas fa-check-circle mr-3 text-2xl"></i>
+                                    <span>شارك قصص النجاح مع فريق الإدارة</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-center items-center space-x-8 mt-8">
+                            <img src="https://ik.imagekit.io/weo7pcw8v/image-removebg-preview%20(4).png?updatedAt=1761788896176" alt="e& Logo" class="h-20 floating">
+                            <img src="https://ik.imagekit.io/weo7pcw8v/image-removebg-preview%20(3).png?updatedAt=1761788895997" alt="Zoho One Logo" class="h-20 floating" style="animation-delay: 1s;">
+                        </div>
+
+                        <div class="mt-8">
+                            <button id="printPresentation" class="bg-white text-zohoRed border-2 border-zohoRed px-8 py-3 rounded-full font-semibold hover:bg-zohoRed hover:text-white transition-all transform hover:scale-105">
+                                <i class="fas fa-print mr-2"></i><span>طباعة العرض</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Optimized JavaScript - Loaded at end -->
+    <script>
+        // =========================
+        // LANGUAGE MANAGEMENT
+        // =========================
+        let currentLang = 'ar';
+
+        function switchLanguage(lang) {
+            currentLang = lang;
+            const html = document.documentElement;
+
+            // Update HTML attributes
+            html.setAttribute('lang', lang);
+            html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+
+            // Update all translatable elements
+            document.querySelectorAll('[data-en], [data-ar]').forEach(element => {
+                const text = element.getAttribute(`data-${lang}`);
+                if (text) {
+                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        element.placeholder = text;
+                    } else {
+                        element.textContent = text;
+                    }
+                }
+            });
+
+            // Update active language button
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Update slide title
+            updateSlideTitle();
+
+            // Update navigation position for RTL
+            const navigation = document.getElementById('navigation');
+            if (lang === 'ar') {
+                navigation.classList.remove('right-6');
+                navigation.classList.add('left-6');
+            } else {
+                navigation.classList.remove('left-6');
+                navigation.classList.add('right-6');
+            }
+        }
+
+        // =========================
+        // LOADING SCREEN MANAGEMENT
+        // =========================
+        window.addEventListener('load', function() {
+            // Ensure minimum loading time for smooth UX (500ms)
+            setTimeout(function() {
+                const loadingScreen = document.getElementById('loading-screen');
+                const mainContent = document.getElementById('main-content');
+
+                loadingScreen.classList.add('hidden');
+                mainContent.classList.add('loaded');
+
+                // Initialize lazy loaded images
+                initLazyImages();
+
+                // Remove loading screen from DOM after animation
+                setTimeout(() => {
+                    loadingScreen.remove();
+                }, 600);
+            }, 500);
+        });
+
+        // Lazy load images
+        function initLazyImages() {
+            const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+            lazyImages.forEach(img => {
+                img.addEventListener('load', function() {
+                    this.classList.add('loaded');
+                });
+
+                // Trigger load if already cached
+                if (img.complete) {
+                    img.classList.add('loaded');
+                }
+            });
+        }
+
+        // =========================
+        // SLIDE MANAGEMENT
+        // =========================
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progress = document.getElementById('progress');
+        const currentSlideNum = document.getElementById('currentSlideNum');
+        const totalSlidesElem = document.getElementById('totalSlides');
+        const slideTitle = document.getElementById('slideTitle');
+        let currentSlide = 0;
+
+        totalSlidesElem.textContent = slides.length;
+
+        function updateSlideTitle() {
+            const slide = slides[currentSlide];
+            const titleAttr = `data-title-${currentLang}`;
+            const title = slide.getAttribute(titleAttr) || slide.getAttribute('data-title-en') || 'Slide ' + (currentSlide + 1);
+            slideTitle.textContent = title;
+        }
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+
+            // Update progress bar
+            const progressPercent = ((currentSlide + 1) / slides.length) * 100;
+            progress.style.width = `${progressPercent}%`;
+
+            // Update slide counter
+            currentSlideNum.textContent = currentSlide + 1;
+
+            // Update slide title
+            updateSlideTitle();
+
+            // Add fade-in animation
+            slides[currentSlide].classList.add('fade-in');
+            setTimeout(() => {
+                slides[currentSlide].classList.remove('fade-in');
+            }, 800);
+
+            // Reset stagger animations
+            const staggerItems = slides[currentSlide].querySelectorAll('.stagger-item');
+            staggerItems.forEach(item => {
+                item.style.animation = 'none';
+                setTimeout(() => {
+                    item.style.animation = '';
+                }, 10);
+            });
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+
+        // Next buttons inside slides
+        document.querySelectorAll('.next-btn').forEach(button => {
+            button.addEventListener('click', nextSlide);
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'ArrowDown') {
+                e.preventDefault();
+                nextSlide();
+            }
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                prevSlide();
+            }
+        });
+
+        // =========================
+        // TIMER FUNCTIONALITY
+        // =========================
+        let startTime = Date.now();
+        const timerDisplay = document.getElementById('timer');
+
+        setInterval(() => {
+            const elapsed = Date.now() - startTime;
+            const minutes = Math.floor(elapsed / 60000);
+            const seconds = Math.floor((elapsed % 60000) / 1000);
+            timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }, 1000);
+
+        // =========================
+        // FULLSCREEN FUNCTIONALITY
+        // =========================
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+        fullscreenBtn.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+                fullscreenBtn.innerHTML = '<i class="fas fa-compress text-xl"></i>';
+            } else {
+                document.exitFullscreen();
+                fullscreenBtn.innerHTML = '<i class="fas fa-expand text-xl"></i>';
+            }
+        });
+
+        // =========================
+        // NOTES PANEL
+        // =========================
+        const notesBtn = document.getElementById('notesBtn');
+        const notesPanel = document.getElementById('notesPanel');
+        const closeNotes = document.getElementById('closeNotes');
+        const downloadNotes = document.getElementById('downloadNotes');
+        const notesTextarea = document.getElementById('notesTextarea');
+
+        // Load saved notes
+        notesTextarea.value = localStorage.getItem('zoho-training-notes') || '';
+
+        // Update placeholder based on language
+        function updateNotesPlaceholder() {
+            const placeholder = notesTextarea.getAttribute(`data-placeholder-${currentLang}`);
+            if (placeholder) {
+                notesTextarea.placeholder = placeholder;
+            }
+        }
+
+        notesBtn.addEventListener('click', () => {
+            notesPanel.classList.add('open');
+            updateNotesPlaceholder();
+        });
+
+        closeNotes.addEventListener('click', () => {
+            notesPanel.classList.remove('open');
+            localStorage.setItem('zoho-training-notes', notesTextarea.value);
+        });
+
+        downloadNotes.addEventListener('click', () => {
+            const blob = new Blob([notesTextarea.value], {
+                type: 'text/plain'
+            });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'zoho-training-notes.txt';
+            a.click();
+        });
+
+        // =========================
+        // QUIZ FUNCTIONALITY
+        // =========================
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const parentDiv = this.closest('.bg-zohoGold');
+                const allOptions = parentDiv.querySelectorAll('.quiz-option');
+                const isCorrect = this.getAttribute('data-correct') === 'true';
+                const slideNum = Array.from(slides).indexOf(this.closest('.slide')) + 1;
+
+                allOptions.forEach(opt => {
+                    opt.classList.remove('selected', 'correct', 'incorrect');
+                    opt.style.pointerEvents = 'none';
+                });
+
+                if (isCorrect) {
+                    this.classList.add('correct');
+                    const feedback = document.getElementById('quiz-feedback-' + slideNum);
+                    if (feedback) {
+                        feedback.classList.remove('hidden');
+                    }
+                } else {
+                    this.classList.add('incorrect');
+                    const incorrect = document.getElementById('quiz-incorrect-' + slideNum);
+                    if (incorrect) {
+                        incorrect.classList.remove('hidden');
+                    }
+                }
+
+                setTimeout(() => {
+                    allOptions.forEach(opt => {
+                        opt.style.pointerEvents = 'auto';
+                    });
+                }, 3000);
+            });
+        });
+
+        // =========================
+        // ROI CALCULATOR
+        // =========================
+        function calculateROI() {
+            const e = parseInt(document.getElementById('emp').value) || 0;
+            const s = parseInt(document.getElementById('sal').value) || 0;
+            const w = parseInt(document.getElementById('wh').value) || 0;
+            const m = parseInt(document.getElementById('ms').value) || 0;
+            const ec = parseInt(document.getElementById('ec').value) || 0;
+            const l = parseInt(document.getElementById('ls').value) || 0;
+
+            const hr = s / 160;
+            const ts = Math.round(w * hr * e * 0.7);
+            const si = Math.round(m * 0.25);
+            const es = Math.round(ec * 0.9);
+            const rs = Math.round(l * 0.8);
+
+            document.getElementById('ts').textContent = ts.toLocaleString() + ' EGP';
+            document.getElementById('si').textContent = si.toLocaleString() + ' EGP';
+            document.getElementById('es').textContent = es.toLocaleString() + ' EGP';
+            document.getElementById('rs').textContent = rs.toLocaleString() + ' EGP';
+            document.getElementById('tot').textContent = (ts + si + es + rs).toLocaleString();
+        }
+
+        // Auto-calculate on load
+        if (document.getElementById('emp')) {
+            calculateROI();
+        }
+
+        // =========================
+        // PRICING CALCULATOR
+        // =========================
+        const priceItems = document.querySelectorAll('.price-item');
+        const standaloneTotal = document.getElementById('standalone-total');
+        const savingsAmount = document.getElementById('savings-amount');
+        const appsCount = document.getElementById('apps-count');
+        const extraApps = document.getElementById('extra-apps');
+        const recommendationMessage = document.getElementById('recommendation-message');
+        const salesScript = document.getElementById('sales-script');
+        const ZOHO_ONE_PRICE = 1575;
+
+        priceItems.forEach(item => {
+            const checkbox = item.querySelector('.app-checkbox');
+
+            item.addEventListener('click', function(e) {
+                if (e.target !== checkbox) {
+                    checkbox.checked = !checkbox.checked;
+                }
+                updatePricing();
+            });
+
+            checkbox.addEventListener('change', function() {
+                updatePricing();
+            });
+        });
+
+        function updatePricing() {
+            let total = 0;
+            let count = 0;
+            const selectedApps = [];
+
+            priceItems.forEach(item => {
+                const checkbox = item.querySelector('.app-checkbox');
+                if (checkbox.checked) {
+                    const price = parseFloat(item.getAttribute('data-price'));
+                    const appName = item.getAttribute('data-app');
+                    total += price;
+                    count++;
+                    selectedApps.push(appName);
+                    item.classList.add('selected');
+                } else {
+                    item.classList.remove('selected');
+                }
+            });
+
+            standaloneTotal.textContent = `${total.toFixed(1)} EGP`;
+
+            const appsText = currentLang === 'ar' ?
+                `${count} ${count === 1 ? 'تطبيق محدد' : count === 2 ? 'تطبيقان محددان' : 'تطبيقات محددة'}` :
+                `${count} app${count !== 1 ? 's' : ''} selected`;
+            appsCount.textContent = appsText;
+
+            const savings = total - ZOHO_ONE_PRICE;
+            savingsAmount.textContent = savings > 0 ? `${savings.toFixed(1)} EGP` : '0 EGP';
+
+            const extraAppsText = currentLang === 'ar' ?
+                `+ ${55 - count} تطبيق إضافي` :
+                `+ ${55 - count} extra apps`;
+            extraApps.textContent = extraAppsText;
+
+            // Update recommendation message
+            if (count === 0) {
+                recommendationMessage.innerHTML = currentLang === 'ar' ?
+                    `<p class="text-lg">👆 اختر التطبيقات أعلاه لرؤية مقارنة الأسعار</p>` :
+                    `<p class="text-lg">👆 Select apps above to see pricing comparison</p>`;
+
+                salesScript.innerHTML = currentLang === 'ar' ?
+                    `<p class="text-gray-600">اختر التطبيقات أعلاه لرؤية السكريبت البيعي الموصى به لهذا السيناريو.</p>` :
+                    `<p class="text-gray-600">Select apps above to see the recommended sales script for this scenario.</p>`;
+            } else if (count >= 3 || total >= ZOHO_ONE_PRICE) {
+                const messageText = currentLang === 'ar' ?
+                    `<div class="bg-green-500 bg-opacity-20 rounded-lg p-4">
+                        <p class="text-2xl font-bold mb-2">🎯 رشح Zoho One!</p>
+                        <p class="text-lg">العميل يوفر ${savings.toFixed(1)} جنيه ويحصل على ${55 - count} تطبيق إضافي!</p>
+                    </div>` :
+                    `<div class="bg-green-500 bg-opacity-20 rounded-lg p-4">
+                        <p class="text-2xl font-bold mb-2">🎯 RECOMMEND ZOHO ONE!</p>
+                        <p class="text-lg">Customer saves ${savings.toFixed(1)} EGP and gets ${55 - count} additional apps!</p>
+                    </div>`;
+                recommendationMessage.innerHTML = messageText;
+
+                const scriptText = currentLang === 'ar' ?
+                    `<p class="font-semibold text-zohoRed mb-2">سيناريو: 3+ تطبيقات محددة - سكريبت التوفير</p>
+                    <p class="mb-3">"بناءً على احتياجاتكم لـ ${getAppNames(selectedApps)}, ستكون التكلفة الإجمالية ${total.toFixed(1)} جنيه شهرياً. باختيار باقة Zoho One 'جميع الموظفين' بسعر 1,575 جنيه شهرياً، ستوفرون فوراً ${savings.toFixed(1)} جنيه شهرياً بينما تحصلون على أكثر من ${55 - count} تطبيق إضافي متكامل بالكامل."</p>
+                    <p class="italic text-gray-700">"الأمر أشبه بشراء تذكرة مفتوحة لمدينة ملاهي كاملة بسعر ${count} لعبة فقط!"</p>` :
+                    `<p class="font-semibold text-zohoRed mb-2">Scenario: 3+ Apps Selected - Savings Script</p>
+                    <p class="mb-3">"Based on your needs for ${getAppNames(selectedApps)}, the total cost would be ${total.toFixed(1)} EGP per month. By opting for the Zoho One 'All Employees' package at 1,575 EGP per month, you immediately save ${savings.toFixed(1)} EGP monthly while gaining access to over ${55 - count} additional fully integrated applications."</p>
+                    <p class="italic text-gray-700">"It's like buying an open ticket to a full amusement park for the price of just ${count} rides!"</p>`;
+                salesScript.innerHTML = scriptText;
+            } else if (count === 2) {
+                const messageText = currentLang === 'ar' ?
+                    `<div class="bg-yellow-500 bg-opacity-20 rounded-lg p-4">
+                        <p class="text-2xl font-bold mb-2">💡 اقترح ترقية Zoho One</p>
+                        <p class="text-lg">العميل قريب! أظهر له قيمة التحضير للمستقبل مع Zoho One.</p>
+                    </div>` :
+                    `<div class="bg-yellow-500 bg-opacity-20 rounded-lg p-4">
+                        <p class="text-2xl font-bold mb-2">💡 SUGGEST ZOHO ONE UPGRADE</p>
+                        <p class="text-lg">Customer is close! Show them the value of future-proofing with Zoho One.</p>
+                    </div>`;
+                recommendationMessage.innerHTML = messageText;
+
+                const scriptText = currentLang === 'ar' ?
+                    `<p class="font-semibold text-zohoRed mb-2">سيناريو: تطبيقان محددان - سكريبت الترقية</p>
+                    <p class="mb-3">"لقد اخترتم أداتين حيويتين. ومع ذلك، مع نمو أعمالكم، ستحتاجون في النهاية إلى الموارد البشرية أو التسويق أو المشاريع. بدلاً من مواجهة التكامل المعقد لاحقاً، نوصي بالنظر في باقة Zoho One."</p>
+                    <p class="italic text-gray-700">"بالبدء بالنظام الموحد عند 1,575 جنيه (فقط ${(ZOHO_ONE_PRICE - total).toFixed(1)} جنيه إضافي)، تضمنون أن كل تطبيق مستقبلي تشغلونه يعمل معاً بشكل مثالي من اليوم الأول كمنصة واحدة متماسكة."</p>` :
+                    `<p class="font-semibold text-zohoRed mb-2">Scenario: 2 Apps Selected - Upgrade Script</p>
+                    <p class="mb-3">"You've chosen two critical tools. However, as your business grows, you will eventually need HR, Marketing, or Projects. Instead of facing complex integration later, we recommend considering the Zoho One package."</p>
+                    <p class="italic text-gray-700">"By starting with the unified system at 1,575 EGP (only ${(ZOHO_ONE_PRICE - total).toFixed(1)} EGP more), you ensure that every future application you turn on works together perfectly from day one as a single, cohesive platform."</p>`;
+                salesScript.innerHTML = scriptText;
+            } else {
+                const messageText = currentLang === 'ar' ?
+                    `<div class="bg-blue-500 bg-opacity-20 rounded-lg p-4">
+                        <p class="text-2xl font-bold mb-2">✅ التطبيق المنفصل جيد</p>
+                        <p class="text-lg">هذا التطبيق الواحد يلبي احتياجات العميل الحالية. احتفظ بـ Zoho One كخيار مستقبلي.</p>
+                    </div>` :
+                    `<div class="bg-blue-500 bg-opacity-20 rounded-lg p-4">
+                        <p class="text-2xl font-bold mb-2">✅ STANDALONE IS FINE</p>
+                        <p class="text-lg">This single app meets the customer's current needs. Keep Zoho One as future option.</p>
+                    </div>`;
+                recommendationMessage.innerHTML = messageText;
+
+                const scriptText = currentLang === 'ar' ?
+                    `<p class="font-semibold text-zohoRed mb-2">سيناريو: تطبيق واحد محدد - سكريبت عرض القيمة</p>
+                    <p class="mb-3">"Zoho ${selectedApps[0].charAt(0).toUpperCase() + selectedApps[0].slice(1)} سيحل مشكلتك الأساسية فوراً. أفضل ما في اختيار Zoho هو حرية الشراء بالطريقة التي تريدها."</p>
+                    <p class="italic text-gray-700">"نبدأ هنا بـ ${total.toFixed(1)} جنيه شهرياً، نحل نقطة الألم هذه، وكلما كنتم مستعدين لمعالجة المحاسبة أو المخزون أو احتياجات أخرى، يمكنكم بسهولة إضافة تلك التطبيقات المتكاملة من مجموعة Zoho - أو الترقية إلى Zoho One للتغطية الكاملة."</p>` :
+                    `<p class="font-semibold text-zohoRed mb-2">Scenario: 1 App Selected - Value Proposition Script</p>
+                    <p class="mb-3">"Zoho ${selectedApps[0].charAt(0).toUpperCase() + selectedApps[0].slice(1)} will immediately solve your core problem. The best part about choosing Zoho is the freedom to purchase the way you want."</p>
+                    <p class="italic text-gray-700">"We start here at ${total.toFixed(1)} EGP per month, solve this pain point, and whenever you're ready to address accounting, inventory, or other needs, you can easily add those integrated applications from the Zoho suite - or upgrade to Zoho One for complete coverage."</p>`;
+                salesScript.innerHTML = scriptText;
+            }
+        }
+
+        function getAppNames(apps) {
+            const names = {
+                'workplace': 'Workplace',
+                'desk': 'Desk',
+                'crm': 'CRM',
+                'sites': 'Sites',
+                'inventory': 'Inventory',
+                'books': 'Books'
+            };
+            return apps.map(app => names[app]).join(', ');
+        }
+
+        // =========================
+        // PRINT FUNCTIONALITY
+        // =========================
+        if (document.getElementById('printPresentation')) {
+            document.getElementById('printPresentation').addEventListener('click', function() {
+                window.print();
+            });
+        }
+
+        // Initialize first slide
+        showSlide(0);
+
+        // Initialize language
+        switchLanguage('ar');
+    </script>
+</body>
+
+</html>
+```
